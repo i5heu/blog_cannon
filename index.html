@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.6.4/showdown.min.js"></script>
+</head>
+<body>
+
+<h1>Das ist ein TEst</h1>
+
+<h1>{{.Title}}</h1>
+
+{{if .Login}}
+<h1>HAHAHH TEST</h1>
+<form action="/newentry" method="post"> <textarea type="text" name="Name"> </textarea> <button type="submit">SEND</button></form>
+{{end}}
+
+
+<h3>{{.Title2}}</h3>
+<br>
+{{range $.Title4}}
+{{.}}<br>
+<hr>
+{{end}}
+<br>
+{{range $.Inventarlist}}
+    <a href="/view/{{.}}">{{.}}</a><br>
+{{end}}
+
+
+{{.Inventarlist}}
+
+
+
+<script language="JavaScript">
+expireAt = new Date;
+expireAt.setMonth(expireAt.getMonth() + 1);
+password = "";
+
+function makeCookie()
+{
+password = document.passform.password.value
+document.cookie = "pwd=" + password + ";expires=" + expireAt.toGMTString()
+}
+
+</script>
+
+<form name="passform">
+<P>Password: <input type="text" name="password"><br>
+<a href="/" onclick="makeCookie()">continue ...</a></p>
+</form>
+
+
+
+
+</body>
+</html>
