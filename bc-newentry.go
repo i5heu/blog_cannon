@@ -7,10 +7,16 @@ import (
 
 func NewentryHandler(w http.ResponseWriter, r *http.Request) {
 
-	cookie, _ := r.Cookie("test")
+	var cookie string
+	var cookieTMP *http.Cookie
+
+	if sessionExists(r, "pwd") == true {
+		cookieTMP, _ = r.Cookie("pwd")
+		cookie = cookieTMP.Value
+	}
 
 	t := "login: false"
-	if cookie.Value == "123" {
+	if cookie == "PASSWORD" {
 		t = "login: true"
 
 		newT := r.FormValue("Name")

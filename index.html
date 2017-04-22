@@ -49,7 +49,7 @@ password = "";
 function makeCookie()
 {
 password = document.passform.password.value
-document.cookie = "pwd=" + password + ";expires=" + expireAt.toGMTString()
+document.cookie = "pwd=" + password + ";expires=" + expireAt.toGMTString() + ";path=/"
 }
 
 </script>

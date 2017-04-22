@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday"
 )
 
@@ -70,7 +71,7 @@ func cache() {
 		var text string
 		err = rows.Scan(&text)
 		checkErr(err)
-		name = append(name, template.HTML(blackfriday.MarkdownCommon([]byte(text))))
+		name = append(name, template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(text)))))
 	}
 
 	timecache = time.Now().Unix()
