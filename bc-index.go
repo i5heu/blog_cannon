@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 	"time"
@@ -11,10 +12,10 @@ import (
 
 type lista struct {
 	Login        bool
-	Title        string
-	Title2       string
+	Articletitle []template.HTML
+	LoginText    string
 	Inventarlist []string
-	Title4       []template.HTML
+	ArticleText  []template.HTML
 }
 
 const (
@@ -25,6 +26,7 @@ const (
 var templatesIndex = template.Must(template.ParseFiles("index.html"))
 var users string
 var name []template.HTML
+var ArticleTitle []template.HTML
 var timecache int64 = time.Now().Unix()
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) { // Das ist der IndexHandler
@@ -40,7 +42,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) { // Das ist der Index
 		login = true
 	}
 
-	lists := lista{login, r.URL.Path, t, readfiles(), name} //r.URL.Path gibt den URL pfad aus
+	lists := lista{login, ArticleTitle, t, readfiles(), name}
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -52,17 +54,23 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) { // Das ist der Index
 
 func cache() {
 	name = name[:0]
+	ArticleTitle = ArticleTitle[:0]
 
 	//nameTmp := r.FormValue("Name")
 
-	rows, err := db.Query("SELECT LEFT (text,200) FROM (SELECT * FROM article ORDER BY id DESC LIMIT 5) sub ORDER BY id ASC")
+	ids, err := db.Query("SELECT id, title, LEFT (text,200) FROM `article` ORDER BY id DESC LIMIT 5")
 	checkErr(err)
+	fmt.Println(ids)
 
-	for rows.Next() {
+	for ids.Next() {
+		var id int
+		var title string
 		var text string
-		err = rows.Scan(&text)
+		_ = ids.Scan(&id, &title, &text)
 		checkErr(err)
 		name = append(name, template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(text)))))
+		ArticleTitle = append(ArticleTitle, template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(title)))))
+		fmt.Println(id, title, text)
 	}
 
 	timecache = time.Now().Unix()

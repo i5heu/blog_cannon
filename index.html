@@ -15,7 +15,7 @@
   <a id="logo" href="/">Blog_CANNON!!!</a>
 	<nav> <a href="/link1.html">Link1</a> <a href="/link1.html">Link1</a> <a href="/link1.html">Link1</a> <a href="/link1.html">Link1</a> <a href="/link1.html">Link1</a> </nav>
 </header>
-<p style="color:#fff; font-size:120; background:#eee;"> ${{.Title}}</p>
+<p style="color:#fff; font-size:120; background:#000;"> ${{.LoginText}}</p>
 
 {{if .Login}}
 <h1>Lorem ipsum</h1>
@@ -23,14 +23,16 @@
 {{end}}
 
 
-<h3>{{.Title2}}</h3>
-<br>
-{{range $.Title4}}
+
+
+{{range $.ArticleText}}
 <article>
 {{.}}...<br>
 </article>
 <hr>
 {{end}}
+
+
 <br>
 {{range $.Inventarlist}}
     <a href="/view/{{.}}">{{.}}</a><br>
