@@ -34,14 +34,21 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) { // Das ist der Index
 
 		cache()
 	}
+	var cookie *http.Cookie
+	var cookieTMP string
 
-	cookie, _ := r.Cookie("pwd")
+	if sessionExists(r, "pwd") == true {
+		cookie, _ = r.Cookie("pwd")
+		cookieTMP = cookie.Value
+	}
+
 	t := "login: false"
-	if cookie.Value == "PASSWORD" {
+	if cookieTMP == "PASSWORD" {
 		t = "login: true"
 		login = true
 	}
 	fmt.Println(login)
+
 	lists := lista{login, r.URL.Path, t, readfiles(), name} //r.URL.Path gibt den URL pfad aus
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
