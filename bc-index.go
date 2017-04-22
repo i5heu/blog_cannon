@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 	"time"
@@ -32,25 +31,17 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) { // Das ist der Index
 	login := false
 
 	if int64(time.Now().Unix()) > timecache+5 {
-
 		cache()
-	}
-	var cookie *http.Cookie
-	var cookieTMP string
-
-	if sessionExists(r, "pwd") == true {
-		cookie, _ = r.Cookie("pwd")
-		cookieTMP = cookie.Value
 	}
 
 	t := "login: false"
-	if cookieTMP == "PASSWORD" {
+	if checkLogin(r) == true {
 		t = "login: true"
 		login = true
 	}
-	fmt.Println(login)
 
 	lists := lista{login, r.URL.Path, t, readfiles(), name} //r.URL.Path gibt den URL pfad aus
+
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 
