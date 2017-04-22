@@ -16,7 +16,7 @@ var err error
 
 func main() {
 	// Create an sql.DB and check for errors
-	db, err = sql.Open("mysql", "USER:PASSWORD@/DATABASE")
+	db, err = sql.Open("mysql", "USER:PASSWORD@/blog")
 	if err != nil {
 		panic(err.Error())
 	}

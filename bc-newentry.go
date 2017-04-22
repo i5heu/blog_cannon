@@ -17,7 +17,7 @@ func NewentryHandler(w http.ResponseWriter, r *http.Request) {
 
 		fmt.Println(newT)
 
-		db.Exec("INSERT INTO kk(dh) VALUES(?)", newT)
+		db.Exec("INSERT INTO article(text) VALUES(?)", newT)
 
 		checkErr(err)
 
