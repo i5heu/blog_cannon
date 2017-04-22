@@ -56,7 +56,7 @@ func cache() {
 
 	//nameTmp := r.FormValue("Name")
 
-	rows, err := db.Query("SELECT dh FROM ( SELECT * FROM kk ORDER BY id DESC LIMIT 5) sub ORDER BY id ASC")
+	rows, err := db.Query("SELECT LEFT (dh,200) FROM (SELECT * FROM kk ORDER BY id DESC LIMIT 5) sub ORDER BY id ASC")
 	checkErr(err)
 
 	for rows.Next() {
