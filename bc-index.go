@@ -10,12 +10,16 @@ import (
 	"github.com/russross/blackfriday"
 )
 
+type Article struct {
+	Articletitle template.HTML
+	ArticleText  template.HTML
+}
+
 type lista struct {
 	Login        bool
-	Articletitle []template.HTML
 	LoginText    string
 	Inventarlist []string
-	ArticleText  []template.HTML
+	Articles     []Article
 }
 
 const (
@@ -24,10 +28,8 @@ const (
 )
 
 var templatesIndex = template.Must(template.ParseFiles("index.html"))
-var users string
-var name []template.HTML
-var ArticleTitle []template.HTML
 var timecache int64 = time.Now().Unix()
+var tmp []Article
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) { // Das ist der IndexHandler
 	login := false
@@ -42,7 +44,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) { // Das ist der Index
 		login = true
 	}
 
-	lists := lista{login, ArticleTitle, t, readfiles(), name}
+	lists := lista{login, t, readfiles(), tmp}
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -53,10 +55,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) { // Das ist der Index
 }
 
 func cache() {
-	name = name[:0]
-	ArticleTitle = ArticleTitle[:0]
-
-	//nameTmp := r.FormValue("Name")
+	tmp = tmp[:0]
 
 	ids, err := db.Query("SELECT id, title, LEFT (text,200) FROM `article` ORDER BY id DESC LIMIT 5")
 	checkErr(err)
@@ -68,9 +67,13 @@ func cache() {
 		var text string
 		_ = ids.Scan(&id, &title, &text)
 		checkErr(err)
-		name = append(name, template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(text)))))
-		ArticleTitle = append(ArticleTitle, template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(title)))))
-		fmt.Println(id, title, text)
+
+		TitleTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(title))))
+		TextTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(text))))
+
+		tmp = append(tmp, Article{TitleTMP, TextTMP})
+
+		fmt.Println(id, TitleTMP, TextTMP)
 	}
 
 	timecache = time.Now().Unix()
