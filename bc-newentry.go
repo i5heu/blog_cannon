@@ -14,14 +14,13 @@ func NewentryHandler(w http.ResponseWriter, r *http.Request) {
 		t = "login: true"
 
 		newT := r.FormValue("Name")
+		newTitle := r.FormValue("Title")
 
-		fmt.Println(newT)
+		fmt.Println(newT, newTitle)
 
-		db.Exec("INSERT INTO article(text) VALUES(?)", newT)
+		db.Exec("INSERT INTO article(title,text) VALUES(?,?)", newTitle, newT)
 
 		checkErr(err)
-
-		fmt.Println("newT")
 
 		http.ServeFile(w, r, "newentry.html")
 

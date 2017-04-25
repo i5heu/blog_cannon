@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 	"time"
@@ -11,24 +10,23 @@ import (
 )
 
 type Article struct {
+	ArticleId    int
 	Articletitle template.HTML
 	ArticleText  template.HTML
 }
 
 type lista struct {
-	Login        bool
-	LoginText    string
-	Inventarlist []string
-	Articles     []Article
+	Login     bool
+	LoginText string
+	Articles  []Article
 }
 
 const (
-	// See http://golang.org/pkg/time/#Parse
 	timeFormat = "2006-01-02 15:04 MST"
 )
 
 var templatesIndex = template.Must(template.ParseFiles("index.html"))
-var timecache int64 = time.Now().Unix()
+var timecache int64 = time.Now().Unix() - 10
 var tmp []Article
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) { // Das ist der IndexHandler
@@ -44,7 +42,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) { // Das ist der Index
 		login = true
 	}
 
-	lists := lista{login, t, readfiles(), tmp}
+	lists := lista{login, t, tmp}
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -59,7 +57,6 @@ func cache() {
 
 	ids, err := db.Query("SELECT id, title, LEFT (text,200) FROM `article` ORDER BY id DESC LIMIT 5")
 	checkErr(err)
-	fmt.Println(ids)
 
 	for ids.Next() {
 		var id int
@@ -68,12 +65,13 @@ func cache() {
 		_ = ids.Scan(&id, &title, &text)
 		checkErr(err)
 
+		text = text + "..."
+
 		TitleTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(title))))
 		TextTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(text))))
 
-		tmp = append(tmp, Article{TitleTMP, TextTMP})
+		tmp = append(tmp, Article{id, TitleTMP, TextTMP})
 
-		fmt.Println(id, TitleTMP, TextTMP)
 	}
 
 	timecache = time.Now().Unix()

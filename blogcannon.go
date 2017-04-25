@@ -31,6 +31,7 @@ func main() {
 
 	http.HandleFunc("/index/", IndexHandler)
 	http.HandleFunc("/newentry", NewentryHandler)
+	http.HandleFunc("/p/", ViewHandler)
 	http.HandleFunc("/", IndexHandler2)
 	http.ListenAndServe(":8080", nil)
 }
