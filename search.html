@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Your Website</title>
+	<link rel="stylesheet" href="https://cdn.rawgit.com/i5heu/BASIC-CSS-templates/ff5043d4f916c9a6ae3e13ea2d6eecec5eca4cf2/multitower/main.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Share+Tech+Mono" rel="stylesheet">
+
+</head>
+<body>
+
+<header>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/AB-ende-blau.svg/150px-AB-ende-blau.svg.png">
+  <a id="logo" href="/">Blog_CANNON!!!</a>
+	<nav> <a href="/link1.html">Link1</a> <a href="/link1.html">Link1</a> <a href="/link1.html">Link1</a> <a href="/link1.html">Link1</a> <a href="/link1.html">Link1</a> </nav>
+</header>
+
+
+
+
+{{range $.SeachResults}}
+<article>
+<a href="/p/{{.ArticleId}}">#{{.ArticleId}}<a>
+<h1>{{.Articletitle}}</h1>
+{{.ArticleText}}<br>
+</article>
+<hr>
+{{end}}
+
+
+
+
+
+<footer>
+	<a href="/">Foo</a>
+</footer>
+
+</body>
+</html>
