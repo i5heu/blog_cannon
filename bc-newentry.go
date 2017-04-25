@@ -16,8 +16,6 @@ func NewentryHandler(w http.ResponseWriter, r *http.Request) {
 		newT := r.FormValue("Name")
 		newTitle := r.FormValue("Title")
 
-		fmt.Println(newT, newTitle)
-
 		db.Exec("INSERT INTO article(title,text) VALUES(?,?)", newTitle, newT)
 
 		checkErr(err)

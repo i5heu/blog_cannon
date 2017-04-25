@@ -16,18 +16,14 @@ var err error
 
 func main() {
 	// Create an sql.DB and check for errors
-	db, err = sql.Open("mysql", "USER:PASSWORD@/blog")
+	db, err = sql.Open("mysql", "USER:PASSWORD@/blog_cannon")
 	if err != nil {
 		panic(err.Error())
 	}
 	// sql.DB should be long lived "defer" closes it once this function ends
 	defer db.Close()
 
-	// Test the connection to the database
-	err = db.Ping()
-	if err != nil {
-		panic(err.Error())
-	}
+	db.Exec("CREATE TABLE IF NOT EXISTS article (id INT NOT NULL AUTO_INCREMENT, title VARCHAR (128) NOT NULL default 'NO TITLE', text text, PRIMARY KEY (id))")
 
 	http.HandleFunc("/index/", IndexHandler)
 	http.HandleFunc("/newentry", NewentryHandler)
