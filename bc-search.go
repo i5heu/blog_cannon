@@ -27,7 +27,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 	searchterm := r.URL.Path[3:]
 
 	newquery := "*" + searchterm + "*"
-	ids, err := db.Query("SELECT * FROM article WHERE MATCH (title,text) AGAINST (? IN BOOLEAN MODE)", newquery)
+	ids, err := db.Query("SELECT  id,title,SUBSTR(text,1,100) FROM article WHERE MATCH (title,text) AGAINST (? IN BOOLEAN MODE)", newquery)
 	checkErr(err)
 	for ids.Next() {
 		var id int
@@ -35,6 +35,7 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 		var text string
 		_ = ids.Scan(&id, &title, &text)
 		checkErr(err)
+		text = text + "..."
 
 		TitleTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(title))))
 		TextTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(text))))

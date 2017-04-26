@@ -23,7 +23,7 @@ func main() {
 	// sql.DB should be long lived "defer" closes it once this function ends
 	defer db.Close()
 
-	db.Exec("CREATE TABLE IF NOT EXISTS article (id INT NOT NULL AUTO_INCREMENT, title VARCHAR (128) NOT NULL default 'NO TITLE', text text, PRIMARY KEY (id),FULLTEXT (title,text))")
+	db.Exec("CREATE TABLE IF NOT EXISTS article (id INT NOT NULL AUTO_INCREMENT, title VARCHAR (128) NOT NULL default 'NO TITLE', text longtext, PRIMARY KEY (id),FULLTEXT (title,text))")
 
 	http.HandleFunc("/index/", IndexHandler)
 	http.HandleFunc("/newentry", NewentryHandler)

@@ -20,11 +20,9 @@
 
 
 {{range $.SeachResults}}
-<article>
 <a href="/p/{{.ArticleId}}">#{{.ArticleId}}<a>
-<h1>{{.Articletitle}}</h1>
+<h2>{{.Articletitle}}</h2>
 {{.ArticleText}}<br>
-</article>
 <hr>
 {{end}}
 
