@@ -2,10 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"io/ioutil"
 	"net/http"
-	"path/filepath"
-	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -23,7 +20,7 @@ func main() {
 	// sql.DB should be long lived "defer" closes it once this function ends
 	defer db.Close()
 
-	db.Exec("CREATE TABLE IF NOT EXISTS article (id INT NOT NULL AUTO_INCREMENT, title VARCHAR (128) NOT NULL default 'NO TITLE', text longtext, PRIMARY KEY (id),FULLTEXT (title,text))")
+	db.Exec("CREATE TABLE IF NOT EXISTS `article` (id INT NOT NULL AUTO_INCREMENT, `timec` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `title` VARCHAR (128) NOT NULL DEFAULT 'NO TITLE', `text` longtext, PRIMARY KEY (id),FULLTEXT (title,text))")
 
 	http.HandleFunc("/index/", IndexHandler)
 	http.HandleFunc("/newentry", NewentryHandler)
@@ -36,15 +33,6 @@ func main() {
 func IndexHandler2(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/index", 302)
 
-}
-
-func readfiles() (tmp []string) {
-	files, _ := ioutil.ReadDir("./")
-	for _, f := range files {
-		tmp = append(tmp, strings.TrimSuffix(f.Name(), filepath.Ext(f.Name())))
-	}
-
-	return tmp
 }
 
 func checkErr(err error) {

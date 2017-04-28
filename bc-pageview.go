@@ -19,7 +19,7 @@ var templatesView = template.Must(template.ParseFiles("view.html"))
 func ViewHandler(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path[3:]
 
-	ids, err := db.Query("SELECT * FROM article where id=(?)", path)
+	ids, err := db.Query("SELECT id,title,text FROM article where id=(?)", path)
 	checkErr(err)
 
 	ids.Next()

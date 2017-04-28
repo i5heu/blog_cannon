@@ -10,7 +10,7 @@ func NewentryHandler(w http.ResponseWriter, r *http.Request) {
 	t := "login: false"
 
 	if checkLogin(r) == true {
-
+		//if true == true {
 		t = "login: true"
 
 		newT := r.FormValue("Name")
