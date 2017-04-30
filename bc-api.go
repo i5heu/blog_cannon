@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func NewentryHandler(w http.ResponseWriter, r *http.Request) {
+func ApiHandler(w http.ResponseWriter, r *http.Request) {
 
 	t := "login: false"
 
@@ -13,10 +13,11 @@ func NewentryHandler(w http.ResponseWriter, r *http.Request) {
 		//if true == true {
 		t = "login: true"
 
-		newTitle := r.FormValue("Title")
+		newID := r.FormValue("Id")
 		newNamepace := r.FormValue("Namespace")
+		newTitle := r.FormValue("Title")
 		newText := r.FormValue("Text")
-		db.Exec("INSERT INTO article(title,namespace,text) VALUES(?,?,?)", ReplaceSpecialChars(newTitle), ReplaceSpecialChars(newNamepace), newText)
+		db.Exec("UPDATE `article` SET `namespace` = ?, `title` = ?, `text` = ? WHERE `article`.`id` = ? ", ReplaceSpecialChars(newNamepace), ReplaceSpecialChars(newTitle), newText, newID)
 
 		checkErr(err)
 

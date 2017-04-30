@@ -28,6 +28,8 @@ func main() {
 	http.HandleFunc("/newentry", NewentryHandler)
 	http.HandleFunc("/p/", ViewHandler)
 	http.HandleFunc("/s/", SearchHandler)
+	http.HandleFunc("/e/", EditHandler)
+	http.HandleFunc("/api/", ApiHandler)
 	http.HandleFunc("/", IndexHandler2)
 	http.ListenAndServe(":8080", nil)
 }

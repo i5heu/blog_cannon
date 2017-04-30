@@ -8,19 +8,19 @@ import (
 	"strings"
 
 	"github.com/microcosm-cc/bluemonday"
-	"github.com/russross/blackfriday"
 )
 
-type view struct {
-	Articlename string
-	Path        string
-	Title       template.HTML
-	Text        template.HTML
+type edit struct {
+	ID        int
+	Namespace template.HTML
+	Path      string
+	Title     template.HTML
+	Text      template.HTML
 }
 
-var templatesView = template.Must(template.ParseFiles("view.html", HtmlStructHeader, HtmlStructFooter))
+var templatesEdit = template.Must(template.ParseFiles("edit.html", HtmlStructHeader, HtmlStructFooter))
 
-func ViewHandler(w http.ResponseWriter, r *http.Request) {
+func EditHandler(w http.ResponseWriter, r *http.Request) {
 	u, err := url.Parse(r.URL.Path)
 
 	checkErr(err)
@@ -45,13 +45,12 @@ func ViewHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "ERROR 404")
 		} else {
 
-			title = namespace + "/" + title
+			NamespaceTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes([]byte(namespace)))
+			TitleTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes([]byte(title)))
+			TextTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes([]byte(text)))
 
-			TitleTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(title))))
-			TextTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(text))))
-
-			views := view{encodetpath1[2], title, TitleTMP, TextTMP}
-			templatesView.Execute(w, views)
+			edits := edit{id, NamespaceTMP, encodetpath1[2], TitleTMP, TextTMP}
+			templatesEdit.Execute(w, edits)
 		}
 
 	}
