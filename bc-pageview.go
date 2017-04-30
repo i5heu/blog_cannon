@@ -17,40 +17,46 @@ type view struct {
 	Text  template.HTML
 }
 
-var templatesView = template.Must(template.ParseFiles("view.html"))
+var templatesView = template.Must(template.ParseFiles("view.html", HtmlStructHeader, HtmlStructFooter))
 
 func ViewHandler(w http.ResponseWriter, r *http.Request) {
 	u, err := url.Parse(r.URL.Path)
+	fmt.Println(">" + u.Path)
+
 	checkErr(err)
 	encodetpath1 := strings.Split(u.Path, "/")
 
-	if len(encodetpath1) < 4 {
-		fmt.Fprintf(w, "ERROR 404")
+	if u.RawQuery == "edit" {
+		fmt.Println("hi")
 	} else {
 
-		ids, err := db.Query("SELECT id,namespace,title,text FROM article WHERE title=(?) AND namespace=(?)", encodetpath1[3], encodetpath1[2])
-		checkErr(err)
-
-		ids.Next()
-		var id int
-		var namespace string
-		var title string
-		var text string
-		_ = ids.Scan(&id, &namespace, &title, &text)
-		checkErr(err)
-
-		if id == 0 {
+		if len(encodetpath1) < 4 {
 			fmt.Fprintf(w, "ERROR 404")
 		} else {
 
-			title = namespace + "/" + title
+			ids, err := db.Query("SELECT id,namespace,title,text FROM article WHERE title=(?) AND namespace=(?)", encodetpath1[3], encodetpath1[2])
+			checkErr(err)
 
-			TitleTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(title))))
-			TextTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(text))))
+			ids.Next()
+			var id int
+			var namespace string
+			var title string
+			var text string
+			_ = ids.Scan(&id, &namespace, &title, &text)
+			checkErr(err)
 
-			views := view{encodetpath1[2], TitleTMP, TextTMP}
-			templatesView.Execute(w, views)
+			if id == 0 {
+				fmt.Fprintf(w, "ERROR 404")
+			} else {
+
+				title = namespace + "/" + title
+
+				TitleTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(title))))
+				TextTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(text))))
+
+				views := view{encodetpath1[2], TitleTMP, TextTMP}
+				templatesView.Execute(w, views)
+			}
 		}
 	}
-
 }
