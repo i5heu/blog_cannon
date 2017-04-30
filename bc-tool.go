@@ -3,8 +3,11 @@ package main
 import (
 	"log"
 	"net/http"
+	"regexp"
+	"strings"
 )
 
+///////////////////////////
 func sessionExists(r *http.Request, cookiename string) bool {
 	_, err := r.Cookie(cookiename)
 	if err == http.ErrNoCookie {
@@ -17,6 +20,7 @@ func sessionExists(r *http.Request, cookiename string) bool {
 	return true
 }
 
+/////////////////////
 func checkLogin(r *http.Request) bool {
 	var cookie string
 	var cookieTMP *http.Cookie
@@ -33,4 +37,13 @@ func checkLogin(r *http.Request) bool {
 	}
 	return false
 
+}
+
+////////////////////////////
+func ReplaceSpecialChars(s string) (sc string) {
+	chars := []string{"]", "^", "\\\\", "[", ".", "(", ")", "<", ">", "/", "#", "?", "=", "ß", "*", "'", "´", "\"", "%", ";", ":", "&", " "}
+	r := strings.Join(chars, "")
+	re := regexp.MustCompile("[" + r + "]+")
+	sc = re.ReplaceAllString(s, "-")
+	return
 }

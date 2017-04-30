@@ -55,19 +55,21 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) { // Das ist der Index
 func cache() {
 	tmp = tmp[:0]
 
-	ids, err := db.Query("SELECT id, title, LEFT (text,200) FROM `article` ORDER BY id DESC LIMIT 5")
+	ids, err := db.Query("SELECT id, namespace, title, LEFT (text,200) FROM `article` ORDER BY id DESC LIMIT 5")
 	checkErr(err)
 
 	for ids.Next() {
 		var id int
+		var namespace string
 		var title string
 		var text string
-		_ = ids.Scan(&id, &title, &text)
+		_ = ids.Scan(&id, &namespace, &title, &text)
 		checkErr(err)
 
 		text = text + "..."
+		title = namespace + "/" + title
 
-		TitleTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(title))))
+		TitleTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes([]byte(title)))
 		TextTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(text))))
 
 		tmp = append(tmp, Article{id, TitleTMP, TextTMP})

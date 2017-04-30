@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"html/template"
 	"net/http"
 
@@ -27,17 +28,28 @@ func SearchHandler(w http.ResponseWriter, r *http.Request) {
 	searchterm := r.URL.Path[3:]
 
 	newquery := "*" + searchterm + "*"
-	ids, err := db.Query("SELECT  id,title,SUBSTR(text,1,100) FROM article WHERE MATCH (title,text) AGAINST (? IN BOOLEAN MODE)", newquery)
+
+	var ids *sql.Rows
+
+	switch searchterm {
+	case "all":
+		ids, err = db.Query("SELECT  id,namespace,title,SUBSTR(text,1,100) FROM article ORDER BY timec DESC")
+	default:
+		ids, err = db.Query("SELECT  id,namespace,title,SUBSTR(text,1,100) FROM article WHERE MATCH (title,text) AGAINST (? IN BOOLEAN MODE)", newquery)
+	}
+
 	checkErr(err)
 	for ids.Next() {
 		var id int
+		var namespace string
 		var title string
 		var text string
-		_ = ids.Scan(&id, &title, &text)
+		_ = ids.Scan(&id, &namespace, &title, &text)
 		checkErr(err)
+		title = namespace + "/" + title
 		text = text + "..."
 
-		TitleTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(title))))
+		TitleTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes([]byte(title)))
 		TextTMP := template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(text))))
 		tmpSearch = append(tmpSearch, SearchResult{id, TitleTMP, TextTMP})
 	}

@@ -13,10 +13,11 @@ func NewentryHandler(w http.ResponseWriter, r *http.Request) {
 		//if true == true {
 		t = "login: true"
 
-		newT := r.FormValue("Name")
 		newTitle := r.FormValue("Title")
-
-		db.Exec("INSERT INTO article(title,text) VALUES(?,?)", newTitle, newT)
+		newNamepace := r.FormValue("Namespace")
+		newText := r.FormValue("Text")
+		fmt.Println(newTitle, newNamepace, newText)
+		db.Exec("INSERT INTO article(title,namespace,text) VALUES(?,?,?)", ReplaceSpecialChars(newTitle), ReplaceSpecialChars(newNamepace), newText)
 
 		checkErr(err)
 
