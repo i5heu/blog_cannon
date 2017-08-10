@@ -15,6 +15,11 @@ type view struct {
 var namespaceView = template.Must(template.ParseFiles("./template/namespace.html", HtmlStructHeader, HtmlStructFooter))
 var templatesView = template.Must(template.ParseFiles("./template/view.html", HtmlStructHeader, HtmlStructFooter))
 
+var PAGECACHE = make(map[string]template.HTML)
+var PAGECACHECACHE = make(map[string]template.HTML)
+var PAGECACHEWRITE bool = false
+var PAGECACHECACHEWRITE bool = false
+
 func PageHandler(w http.ResponseWriter, r *http.Request) {
 
 	u, err := url.Parse(r.URL.Path)
