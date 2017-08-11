@@ -49,6 +49,7 @@ func main() {
 			TMPCACHEWRITE = true
 			time.Sleep(500 * time.Millisecond)
 			MainCacheFunc("maincache")
+			PageCacheLoader()
 			TMPCACHEWRITE = false
 			time.Sleep(500 * time.Millisecond)
 
@@ -61,7 +62,7 @@ func main() {
 
 			TMPCACHECACHEWRITE = false
 
-			time.Sleep(5 * time.Second)
+			time.Sleep(30 * time.Second)
 		}
 	}()
 
