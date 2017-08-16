@@ -13,5 +13,5 @@ var templatefolder string = "/home/her/CODE/blog_cannon/template"
 
 /*############# END OF CONFIG ################*/
 
-var foo = sha256.Sum256([]byte(personalpwdTMP))
-var personalpwd = hex.EncodeToString(foo[:])
+var foo2355523 = sha256.Sum256([]byte(personalpwdTMP))
+var personalpwd = hex.EncodeToString(foo2355523[:])

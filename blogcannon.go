@@ -44,6 +44,8 @@ func main() {
 	// sql.DB should be long lived "defer" closes it once this function ends
 	defer db.Close()
 
+	db.Exec("CREATE TABLE IF NOT EXISTS `article` ( `id` int(10) unsigned NOT NULL AUTO_INCREMENT, `title` varchar(100) NOT NULL DEFAULT 'NO TITLE', `tags` varchar(500) NOT NULL DEFAULT 'NO TAGS',`category` varchar(100) NOT NULL DEFAULT 'main', `timecreate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `text` longtext NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1")
+
 	go func() {
 		for {
 			TMPCACHEWRITE = true
@@ -69,6 +71,7 @@ func main() {
 
 	http.HandleFunc("/p/", PageHandler)
 	http.HandleFunc("/archive", ArchiveHandler)
+	http.HandleFunc("/api", ApiHandler)
 	http.HandleFunc("/favicon.ico", FaviconHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.HandleFunc("/", HomeHandler)
