@@ -50,6 +50,7 @@ func main() {
 			time.Sleep(500 * time.Millisecond)
 			MainCacheFunc("maincache")
 			PageCacheLoader()
+			ArchiveCacheFunc("archive")
 			TMPCACHEWRITE = false
 			time.Sleep(500 * time.Millisecond)
 
@@ -67,6 +68,7 @@ func main() {
 	}()
 
 	http.HandleFunc("/p/", PageHandler)
+	http.HandleFunc("/archive", ArchiveHandler)
 	http.HandleFunc("/favicon.ico", FaviconHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.HandleFunc("/", HomeHandler)
