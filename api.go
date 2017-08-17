@@ -22,6 +22,7 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 	var Sjson ApiSTRUCT
 	errSearch := decoder.Decode(&Sjson)
 	if errSearch != nil {
+		fmt.Println(errSearch)
 		fmt.Fprintf(w, "ERROR")
 		checkErr(err)
 		return

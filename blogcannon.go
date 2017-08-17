@@ -65,7 +65,7 @@ func main() {
 
 			TMPCACHECACHEWRITE = false
 
-			time.Sleep(30 * time.Second)
+			time.Sleep(120 * time.Second)
 		}
 	}()
 

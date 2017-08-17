@@ -38,12 +38,19 @@ function PWSave(){
 }
 
 function ArticleSend(){
-  data = '{"PWD":"'+  $.cookie("pwd") + `", "Title":"` + $('#title').val() + `", "Category":"` + $('#category').val() + `", "Tags":"` + $('#tags').val() + `", "Text":"` + $('#text').val() + '"}';
+  var data = {
+    PWD:      $.cookie("pwd"),
+    Title:    $('#title').val(),
+    Category: $('#category').val(),
+    Tags:     $('#tags').val(),
+    Text:     $('#text').val()
+  }
+
 
   $.ajax({
               type:"POST",
               url: "/api",
-              data:data,
+              data:JSON.stringify(data),
               success: function (response){
                     $(".flexparent").append('<div class="SearchFlexChild" id="TextSearch"></div>')
                     var json = $.parseJSON(response);
