@@ -7,9 +7,6 @@ import (
 	"net/url"
 	"strings"
 	"time"
-
-	"github.com/microcosm-cc/bluemonday"
-	"github.com/russross/blackfriday"
 )
 
 type view struct {
@@ -36,7 +33,7 @@ func PageCacheLoader() {
 
 		var MainCacheTMP template.HTML
 
-		MainCacheTMP = template.HTML("<article><h1>") + template.HTML(title) + template.HTML("</h1><div class='category'>") + template.HTML(category) + template.HTML("</div><div class='tags'>") + template.HTML(tags) + template.HTML("</div>") + template.HTML(bluemonday.UGCPolicy().SanitizeBytes(blackfriday.MarkdownCommon([]byte(text)))) + template.HTML("</article>")
+		MainCacheTMP = template.HTML("<article><h1>") + template.HTML(title) + template.HTML("</h1><div class='category'>") + template.HTML(category) + template.HTML("</div><div class='tags'>") + template.HTML(tags) + template.HTML("</div>") + template.HTML(text) + template.HTML("</article>")
 
 		foo := category + "/" + title
 
