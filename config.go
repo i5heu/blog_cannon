@@ -7,7 +7,7 @@ import (
 
 var guestmode bool = true
 var dblogin string = "USER:PASSWORD@/blog_cannon"
-var personalpwdTMP string = "wiki"
+var personalpwdTMP string = "cannon"
 
 var templatefolder string = "/home/her/CODE/blog_cannon/template"
 

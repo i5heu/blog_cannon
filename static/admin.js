@@ -12,6 +12,7 @@ $( document ).ready(function() {
   $('#ApiContainer').on( 'click', '#PwSend', function () {
     console.log("PwdSend");
     PWSave();
+    location.reload();
   });
 
   $('#ApiContainer').on( 'click', '#articlesend', function () {

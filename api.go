@@ -27,8 +27,10 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if personalpwd == Sjson.PWD {
-		fmt.Fprintf(w, "Not Loged in")
+	if personalpwd != Sjson.PWD {
+		fmt.Fprintf(w, `{"Status":"Not Loged in"}`)
+		fmt.Println("ApiHandler-Not Loged in:", time.Since(start))
+		return
 	}
 
 	db.Exec("INSERT INTO article(title,category,tags,text) VALUES(?,?,?,?)", ReplaceSpecialChars(Sjson.Title), Sjson.Category, Sjson.Tags, Sjson.Text)
