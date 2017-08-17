@@ -75,7 +75,7 @@ func main() {
 	http.HandleFunc("/favicon.ico", FaviconHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.HandleFunc("/", HomeHandler)
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8083", nil)
 }
 
 func FaviconHandler(w http.ResponseWriter, r *http.Request) {
