@@ -5,6 +5,8 @@ import (
 	"html/template"
 	"net/http"
 	"time"
+
+	"github.com/russross/blackfriday"
 )
 
 type lista struct {
@@ -47,7 +49,7 @@ func MainCacheFunc(foo string) {
 
 		slug := category + "/" + title
 
-		MainCacheTMP += template.HTML("<article><a href='/p/") + template.HTML(slug) + template.HTML("'><h1>") + template.HTML(title) + template.HTML("</h1><a><div class='category'>") + template.HTML(category) + template.HTML("</div><div class='tags'>") + template.HTML(tags) + template.HTML("</div>") + template.HTML(text) + template.HTML("</article>")
+		MainCacheTMP += template.HTML("<article><a href='/p/") + template.HTML(slug) + template.HTML("'><h1>") + template.HTML(title) + template.HTML("</h1><a><div class='category'>") + template.HTML(category) + template.HTML("</div><div class='tags'>") + template.HTML(tags) + template.HTML("</div>") + template.HTML(blackfriday.MarkdownCommon([]byte(text))) + template.HTML("</article>")
 	}
 
 	TMPCACHE[foo] = MainCacheTMP
