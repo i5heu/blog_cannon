@@ -11,11 +11,6 @@ import (
 	"github.com/russross/blackfriday"
 )
 
-type view struct {
-	Rendertime time.Duration
-	Articles   template.HTML
-}
-
 func PageCacheLoader() {
 	start := time.Now()
 
@@ -62,17 +57,17 @@ func PageHandler(w http.ResponseWriter, r *http.Request) {
 
 	slug := encodetpath1[2] + "/" + encodetpath1[3]
 
-	views := view{}
+	list := lista{}
 
 	if TMPCACHEWRITE == false {
-		views = view{time.Since(start), TMPCACHE[slug]}
+		list = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHE[slug]}
 	} else if TMPCACHECACHEWRITE == false {
-		views = view{time.Since(start), TMPCACHECACHE[slug]}
+		list = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHECACHE[slug]}
 	} else {
-		views = view{time.Since(start), template.HTML("<b> CACHE ERROR <br> Please reload this page</b>")}
+		list = lista{template.HTML(conf.BlogName), time.Since(start), template.HTML("<b> CACHE ERROR <br> Please reload this page</b>")}
 	}
 
-	templatesView.Execute(w, views)
+	templatesView.Execute(w, list)
 
 	fmt.Println("PAGE:", time.Since(start))
 }

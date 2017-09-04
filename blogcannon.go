@@ -16,8 +16,6 @@ import (
 var HtmlStructHeader string
 var HtmlStructFooter string
 
-var templatesDesktop = template.Must(template.ParseFiles("./template/home.html", HtmlStructHeader, HtmlStructFooter))
-
 var fs = http.FileServer(http.Dir("static"))
 
 var db *sql.DB
@@ -27,7 +25,7 @@ var TMPCACHECACHE = make(map[string]template.HTML)
 var TMPCACHEWRITE bool = false
 var TMPCACHECACHEWRITE bool = false
 
-var namespaceView, templatesView *template.Template
+var namespaceView, templatesView, templatesDesktop *template.Template
 
 type Config struct {
 	Dblogin        string
@@ -36,6 +34,7 @@ type Config struct {
 	GuestPWD       string
 	Templatefolder string
 	AdminHASH      string
+	BlogName       string
 }
 
 var conf Config
@@ -53,8 +52,9 @@ func main() {
 	HtmlStructHeader = conf.Templatefolder + `/header.html`
 	HtmlStructFooter = conf.Templatefolder + `/footer.html`
 
-	namespaceView = template.Must(template.ParseFiles("./template/home.html", HtmlStructHeader, HtmlStructFooter))
-	templatesView = template.Must(template.ParseFiles("./template/home.html", HtmlStructHeader, HtmlStructFooter))
+	namespaceView = template.Must(template.ParseFiles("./template/layout.html"))
+	templatesView = template.Must(template.ParseFiles("./template/layout.html"))
+	templatesDesktop = template.Must(template.ParseFiles("./template/layout.html"))
 
 	// ################ END CONFIG ###########################
 

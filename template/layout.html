@@ -1,9 +1,8 @@
-{{define "header"}}
 <!DOCTYPE HTML>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Your Website</title>
+	<title>{{.BlogName}}</title>
 	<link rel="stylesheet" href="/static/main.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Share+Tech+Mono" rel="stylesheet">
@@ -34,8 +33,18 @@
 <body>
 
 <header>
-  <a id="logo" href="/">YourLogo!</a>
+  <a id="logo" href="/">{{.BlogName}}</a>
 	<nav> <a href="/archive">Archive</a> <a href="/static/about.html">About</a> </nav>
 </header>
 
-{{.Body}}{{end}}
+{{.Data}}
+
+{{.Rendertime}}
+
+
+<footer>
+	<a href="/static/impressum.htlm">Impressum</a>
+</footer>
+
+</body>
+</html>

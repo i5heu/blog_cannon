@@ -10,8 +10,9 @@ import (
 )
 
 type lista struct {
+	BlogName   template.HTML
 	Rendertime time.Duration
-	Articles   template.HTML
+	Data       template.HTML
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
@@ -20,11 +21,11 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	lists := lista{}
 
 	if TMPCACHEWRITE == false {
-		lists = lista{time.Since(start), TMPCACHE["maincache"]}
+		lists = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHE["maincache"]}
 	} else if TMPCACHECACHEWRITE == false {
-		lists = lista{time.Since(start), TMPCACHECACHE["maincache"]}
+		lists = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHECACHE["maincache"]}
 	} else {
-		lists = lista{time.Since(start), template.HTML("<b>Please reload this page</b>")}
+		lists = lista{template.HTML(conf.BlogName), time.Since(start), template.HTML("<b>Please reload this page</b>")}
 	}
 
 	templatesDesktop.Execute(w, lists)
