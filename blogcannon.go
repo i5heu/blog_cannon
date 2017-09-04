@@ -1,17 +1,20 @@
 package main
 
 import (
+	"crypto/sha256"
 	"database/sql"
+	"encoding/hex"
 	"fmt"
 	"html/template"
 	"net/http"
 	"time"
 
+	"github.com/BurntSushi/toml"
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var HtmlStructHeader string = templatefolder + `/header.html`
-var HtmlStructFooter string = templatefolder + `/footer.html`
+var HtmlStructHeader string
+var HtmlStructFooter string
 
 var templatesDesktop = template.Must(template.ParseFiles("./template/home.html", HtmlStructHeader, HtmlStructFooter))
 
@@ -24,10 +27,40 @@ var TMPCACHECACHE = make(map[string]template.HTML)
 var TMPCACHEWRITE bool = false
 var TMPCACHECACHEWRITE bool = false
 
-func main() {
-	fmt.Println("HALLO")
+var namespaceView, templatesView *template.Template
 
-	db, err = sql.Open("mysql", dblogin)
+type Config struct {
+	Dblogin        string
+	Guestmode      bool
+	AdminPWD       string
+	GuestPWD       string
+	Templatefolder string
+	AdminHASH      string
+}
+
+var conf Config
+
+func main() {
+
+	if _, err := toml.DecodeFile("config.toml", &conf); err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	var foo = sha256.Sum256([]byte(conf.AdminPWD)) //sha256 Parser for Password Token
+	conf.AdminHASH = hex.EncodeToString(foo[:])
+
+	HtmlStructHeader = conf.Templatefolder + `/header.html`
+	HtmlStructFooter = conf.Templatefolder + `/footer.html`
+
+	namespaceView = template.Must(template.ParseFiles("./template/home.html", HtmlStructHeader, HtmlStructFooter))
+	templatesView = template.Must(template.ParseFiles("./template/home.html", HtmlStructHeader, HtmlStructFooter))
+
+	// ################ END CONFIG ###########################
+
+	fmt.Println("START")
+
+	db, err = sql.Open("mysql", conf.Dblogin)
 	db.SetConnMaxLifetime(time.Second * 2)
 	db.SetMaxIdleConns(10)
 	db.SetMaxOpenConns(25)

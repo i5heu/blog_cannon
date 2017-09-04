@@ -16,9 +16,6 @@ type view struct {
 	Articles   template.HTML
 }
 
-var namespaceView = template.Must(template.ParseFiles("./template/home.html", HtmlStructHeader, HtmlStructFooter))
-var templatesView = template.Must(template.ParseFiles("./template/home.html", HtmlStructHeader, HtmlStructFooter))
-
 func PageCacheLoader() {
 	start := time.Now()
 

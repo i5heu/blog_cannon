@@ -28,7 +28,7 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if personalpwd != Sjson.PWD {
+	if conf.AdminHASH != Sjson.PWD {
 		fmt.Fprintf(w, `{"Status":"Not Loged in"}`)
 		fmt.Println("ApiHandler-Not Loged in:", time.Since(start))
 		return
