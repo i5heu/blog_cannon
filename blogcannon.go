@@ -37,7 +37,7 @@ type Config struct {
 	BlogName       string
 }
 
-var conf Config
+var conf Config // Standart SORCE for Password etc.
 
 func main() {
 
