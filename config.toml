@@ -1,0 +1,4 @@
+Dblogin = "USER:PASSWORD@/blog_cannon"
+Guestmode = true
+AdminPWD = "cannon"
+Templatefolder = "/home/her/CODE/wiki_cannon/template"
