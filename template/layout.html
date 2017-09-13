@@ -7,7 +7,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Share+Tech+Mono" rel="stylesheet">
 
-
 	<link rel="shortcut icon" href="/static/favicon/favicon.ico">
 	<link rel="apple-touch-icon" sizes="57x57" href="/static/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="/static/apple-icon-60x60.png">
@@ -38,6 +37,31 @@
 </header>
 
 {{.Data}}
+
+
+{{if .Comments}}
+<link rel="stylesheet" href="/static/gosocial_comment.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=
+sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f
+sha512-3P8rXCuGJdNZOnUx/03c1jOTnMn3rP63nBip5gOP2qmUh5YAdVAvFZ1E+QLZZbC1rtMrQb+mah3AfYW11RUrWA=="
+crossorigin="anonymous"></script>
+<script src="/static/gosocial_comment.js"></script>
+
+<div id="GoSocial_CommentConateiner">
+  <div id="GoSocial_SubmitForm">
+    Name
+    <input id="GoSocial_SubmitForm_Name"></intput>
+    Title
+    <input id="GoSocial_SubmitForm_Title"></intput>
+    Comment
+    <textarea id="GoSocial_SubmitForm_Text"></textarea>
+    <button id="GoSocial_SubmitForm_Send">SEND</button>
+  </div>
+  <div id="GoSocial_Comments"></div>
+</div>
+{{end}}
 
 {{.Rendertime}}
 

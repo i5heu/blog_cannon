@@ -13,6 +13,7 @@ type lista struct {
 	BlogName   template.HTML
 	Rendertime time.Duration
 	Data       template.HTML
+	Comments   bool
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
@@ -21,11 +22,11 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	lists := lista{}
 
 	if TMPCACHEWRITE == false {
-		lists = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHE["maincache"]}
+		lists = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHE["maincache"], false}
 	} else if TMPCACHECACHEWRITE == false {
-		lists = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHECACHE["maincache"]}
+		lists = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHECACHE["maincache"], false}
 	} else {
-		lists = lista{template.HTML(conf.BlogName), time.Since(start), template.HTML("<b>Please reload this page</b>")}
+		lists = lista{template.HTML(conf.BlogName), time.Since(start), template.HTML("<b>Please reload this page</b>"), false}
 	}
 
 	templatesDesktop.Execute(w, lists)

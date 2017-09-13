@@ -5,12 +5,14 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"fmt"
+	"gosocial"
 	"html/template"
 	"net/http"
 	"time"
 
 	"github.com/BurntSushi/toml"
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/i5heu/gosocial"
 )
 
 var HtmlStructHeader string
@@ -40,6 +42,7 @@ type Config struct {
 var conf Config // Standart SORCE for Password etc.
 
 func main() {
+	fmt.Println("Blog starting....")
 
 	if _, err := toml.DecodeFile("config.toml", &conf); err != nil {
 		fmt.Println(err)
@@ -58,7 +61,7 @@ func main() {
 
 	// ################ END CONFIG ###########################
 
-	fmt.Println("START")
+	fmt.Println("Blog START")
 
 	db, err = sql.Open("mysql", conf.Dblogin)
 	db.SetConnMaxLifetime(time.Second * 2)
@@ -78,6 +81,7 @@ func main() {
 	defer db.Close()
 
 	db.Exec("CREATE TABLE IF NOT EXISTS `article` ( `id` int(10) unsigned NOT NULL AUTO_INCREMENT, `title` varchar(100) NOT NULL DEFAULT 'NO TITLE', `tags` varchar(500) NOT NULL DEFAULT 'NO TAGS',`category` varchar(100) NOT NULL DEFAULT 'main', `timecreate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `text` longtext NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1")
+	gosocial.Init(db)
 
 	go func() {
 		for {
@@ -106,9 +110,14 @@ func main() {
 	http.HandleFunc("/archive", ArchiveHandler)
 	http.HandleFunc("/api", ApiHandler)
 	http.HandleFunc("/favicon.ico", FaviconHandler)
+	http.HandleFunc("/gosocial", GoSocial)
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.HandleFunc("/", HomeHandler)
 	http.ListenAndServe(":8083", nil)
+}
+
+func GoSocial(w http.ResponseWriter, r *http.Request) {
+	gosocial.ApiHandler(w, r, conf.AdminHASH)
 }
 
 func FaviconHandler(w http.ResponseWriter, r *http.Request) {
