@@ -5,14 +5,13 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"fmt"
-	"gosocial"
 	"html/template"
 	"net/http"
 	"time"
 
 	"github.com/BurntSushi/toml"
 	_ "github.com/go-sql-driver/mysql"
-	_ "github.com/i5heu/gosocial"
+	"github.com/i5heu/gosocial"
 )
 
 var HtmlStructHeader string
@@ -30,13 +29,20 @@ var TMPCACHECACHEWRITE bool = false
 var namespaceView, templatesView, templatesDesktop *template.Template
 
 type Config struct {
-	Dblogin        string
-	Guestmode      bool
-	AdminPWD       string
-	GuestPWD       string
-	Templatefolder string
-	AdminHASH      string
-	BlogName       string
+	Dblogin                  string
+	Guestmode                bool
+	AdminPWD                 string
+	GuestPWD                 string
+	Templatefolder           string
+	AdminHASH                string
+	BlogName                 string
+	JabberNotification       bool
+	JabberHost               string
+	JabberUser               string
+	JabberPassword           string
+	JabberServerName         string
+	JabberJIDreciever        string
+	JabberInsecureSkipVerify bool
 }
 
 var conf Config // Standart SORCE for Password etc.
@@ -117,7 +123,12 @@ func main() {
 }
 
 func GoSocial(w http.ResponseWriter, r *http.Request) {
-	gosocial.ApiHandler(w, r, conf.AdminHASH)
+	foo, title, text := gosocial.ApiHandler(w, r, conf.AdminHASH)
+
+	if foo == "WriteComment" {
+		bar := "⚐ WriteComment \n###Title###-->\n" + title + "\n\n###Comment###-->\n" + text
+		sendXMPP(bar)
+	}
 }
 
 func FaviconHandler(w http.ResponseWriter, r *http.Request) {

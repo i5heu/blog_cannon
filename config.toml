@@ -1,5 +1,12 @@
-Dblogin = "USER:PASSWORD@/blog_cannon"
-Guestmode = true
-AdminPWD = "cannon"
-Templatefolder = "/home/her/CODE/blog_cannon/template"
-BlogName = "blog_cannon"
+Dblogin            = "USER:PASSWORD@/blog_cannon"
+Guestmode          = true
+AdminPWD           = "cannon"
+Templatefolder     = "/home/her/CODE/blog_cannon/template"
+BlogName           = "blog_cannon"
+JabberNotification = true
+JabberHost         = "i5h.de:5222"
+JabberUser         = "bot@i5h.de"
+JabberPassword     = "liphyuWoalNezDidvojdemonCathFeutUgImiaj="
+JabberServerName   = "ejabberd"
+JabberJIDreciever  = "marvin@i5h.de"
+JabberInsecureSkipVerify = true
