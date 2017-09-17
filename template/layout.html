@@ -27,13 +27,6 @@
 	<meta name="theme-color" content="#f1f1f1">
 
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"
-	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=
-	sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f
-	sha512-3P8rXCuGJdNZOnUx/03c1jOTnMn3rP63nBip5gOP2qmUh5YAdVAvFZ1E+QLZZbC1rtMrQb+mah3AfYW11RUrWA=="
-	crossorigin="anonymous"></script>
-
-
 </head>
 <body>
 
@@ -51,7 +44,7 @@
 
 {{if .Comments}}
 <link rel="stylesheet" href="/static/gosocial_comment.css">
-<script src="/static/gosocial_comment.js" async></script>
+
 
 <div id="GoSocial_CommentConateiner">
   <div id="GoSocial_SubmitForm">
@@ -71,6 +64,17 @@
 
 
 <footer>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=
+	sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f
+	sha512-3P8rXCuGJdNZOnUx/03c1jOTnMn3rP63nBip5gOP2qmUh5YAdVAvFZ1E+QLZZbC1rtMrQb+mah3AfYW11RUrWA=="
+	crossorigin="anonymous"></script>
+	{{if .Comments}}
+		<script src="/static/gosocial_comment.js" async></script>
+	{{end}}
+
+
+
 	<a href="/static/impressum.html">Impressum</a>
 	<a href="/static/datenschutz.html">Datenschutz</a>
 	<br>
