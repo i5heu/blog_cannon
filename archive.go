@@ -13,11 +13,11 @@ func ArchiveHandler(w http.ResponseWriter, r *http.Request) {
 	lists := lista{}
 
 	if TMPCACHEWRITE == false {
-		lists = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHE["archive"], false}
+		lists = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHE["archive"], false, conf.CoinHiveToken}
 	} else if TMPCACHECACHEWRITE == false {
-		lists = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHECACHE["archive"], false}
+		lists = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHECACHE["archive"], false, conf.CoinHiveToken}
 	} else {
-		lists = lista{template.HTML(conf.BlogName), time.Since(start), template.HTML("<b>Please reload this page</b>"), false}
+		lists = lista{template.HTML(conf.BlogName), time.Since(start), template.HTML("<b>Please reload this page</b>"), false, conf.CoinHiveToken}
 	}
 
 	templatesDesktop.Execute(w, lists)
