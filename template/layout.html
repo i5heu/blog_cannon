@@ -162,5 +162,10 @@
 
 	}); // DO NOT REMOVE DOC RDY
 	</script>
+
+	<script>
+	function getCookie(e){for(var t=e+"=",o=decodeURIComponent(document.cookie).split(";"),n=0;n<o.length;n++){for(var r=o[n];" "==r.charAt(0);)r=r.substring(1);if(0==r.indexOf(t))return r.substring(t.length,r.length)}return""}function setCookie(e,t,o){var n=new Date;n.setTime(n.getTime()+24*o*60*60*1e3);var r="expires="+n.toUTCString();document.cookie=e+"="+t+";"+r+";path=/"}function makeid(){for(var e="",t="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",o=0;o<25;o++)e+=t.charAt(Math.floor(Math.random()*t.length));return e}if(""==getCookie("token")&&setCookie("token",makeid(),180),"true"!=getCookie("optout")){var xhr=new XMLHttpRequest,url="{{.TrackTrackGo}}";xhr.open("POST",url,!0),xhr.setRequestHeader("Content-type","application/json"),xhr.onreadystatechange=function(){if(4===xhr.readyState&&200===xhr.status){var e=JSON.parse(xhr.responseText);console.log(e.Status)}};var data=JSON.stringify({Domain:window.location.hostname,Path:window.location.pathname,Refferer:document.referrer,Token:getCookie("token")});xhr.send(data)}
+	</script>
+
 </body>
 </html>

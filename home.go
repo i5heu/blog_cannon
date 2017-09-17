@@ -15,6 +15,7 @@ type lista struct {
 	Data          template.HTML
 	Comments      bool
 	CoinHiveToken string
+	TrackTrackGo  string
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
@@ -23,11 +24,11 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	lists := lista{}
 
 	if TMPCACHEWRITE == false {
-		lists = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHE["maincache"], false, conf.CoinHiveToken}
+		lists = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHE["maincache"], false, conf.CoinHiveToken, conf.TrackTrackGo}
 	} else if TMPCACHECACHEWRITE == false {
-		lists = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHECACHE["maincache"], false, conf.CoinHiveToken}
+		lists = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHECACHE["maincache"], false, conf.CoinHiveToken, conf.TrackTrackGo}
 	} else {
-		lists = lista{template.HTML(conf.BlogName), time.Since(start), template.HTML("<b>Please reload this page</b>"), false, conf.CoinHiveToken}
+		lists = lista{template.HTML(conf.BlogName), time.Since(start), template.HTML("<b>Please reload this page</b>"), false, conf.CoinHiveToken, conf.TrackTrackGo}
 	}
 
 	templatesDesktop.Execute(w, lists)
