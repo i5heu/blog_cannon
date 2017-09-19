@@ -14,7 +14,7 @@ import (
 func PageCacheLoader() {
 	start := time.Now()
 
-	ids, err := db.Query("SELECT title,tags,category,text FROM `article` ORDER by timecreate DESC LIMIT 10")
+	ids, err := db.Query("SELECT title,tags,category,text FROM `item` ORDER by timecreate DESC LIMIT 10")
 	checkErr(err)
 
 	for ids.Next() {

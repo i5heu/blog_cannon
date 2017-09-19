@@ -29,22 +29,23 @@ func ArchiveCacheFunc(foo string) {
 	start := time.Now()
 	var MainCacheTMP template.HTML
 
-	MainCacheTMP += template.HTML("<table><tr><th>Name</th><th>Category</th><th>Tags</th><th>Created</th></tr>")
+	MainCacheTMP += template.HTML("<style>body{max-width:800px;}</style><table><tr><th>Name</th><th>Category</th><th>Method</th><th>Tags</th><th>Created</th></tr>")
 
-	ids, err := db.Query("SELECT title,tags,category,timecreate FROM `article` ORDER by timecreate DESC")
+	ids, err := db.Query("SELECT method,title,tags,category,timecreate FROM `item` ORDER by timecreate DESC")
 	checkErr(err)
 
 	for ids.Next() {
+		var method string
 		var title string
 		var tags string
 		var category string
 		var timecreate string
-		_ = ids.Scan(&title, &tags, &category, &timecreate)
+		_ = ids.Scan(&method, &title, &tags, &category, &timecreate)
 		checkErr(err)
 
 		slug := category + "/" + title
 
-		MainCacheTMP += template.HTML("<tr><td><a href='/p/") + template.HTML(slug) + template.HTML("'>") + template.HTML(title) + template.HTML("</a></td><td>") + template.HTML(category) + template.HTML("</td><td>") + template.HTML(tags) + template.HTML("</td><td>") + template.HTML(timecreate) + template.HTML("</td></tr>")
+		MainCacheTMP += template.HTML("<tr><td><a href='/p/") + template.HTML(slug) + template.HTML("'>") + template.HTML(title) + template.HTML("</a></td><td>") + template.HTML(category) + template.HTML("</td><td>") + template.HTML(method) + template.HTML("</td><td>") + template.HTML(tags) + template.HTML("</td><td>") + template.HTML(timecreate) + template.HTML("</td></tr>")
 	}
 
 	MainCacheTMP += template.HTML("</table>")

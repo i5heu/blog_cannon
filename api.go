@@ -9,6 +9,7 @@ import (
 
 type ApiSTRUCT struct {
 	PWD      string
+	Method   string
 	Title    string
 	Category string
 	Tags     string
@@ -34,7 +35,15 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db.Exec("INSERT INTO article(title,category,tags,text) VALUES(?,?,?,?)", ReplaceSpecialChars(Sjson.Title), Sjson.Category, Sjson.Tags, Sjson.Text)
+	if Sjson.Method == "article" || Sjson.Method == "snippet" || Sjson.Method == "link" {
+		db.Exec("INSERT INTO item(method,title,category,tags,text) VALUES(?,?,?,?,?)", Sjson.Method, ReplaceSpecialChars(Sjson.Title), Sjson.Category, Sjson.Tags, Sjson.Text)
+	} else {
+		fmt.Fprintf(w, `{"Status":"No Valid Method"}`)
+		fmt.Println("ApiHandler-No Valid Method:", time.Since(start))
+		return
+	}
+
+	//if Sjson.Method ==
 
 	fmt.Fprintf(w, `{"Status":"OK"}`)
 	fmt.Println("ApiHandler:", time.Since(start))

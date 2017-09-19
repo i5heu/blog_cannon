@@ -3,7 +3,17 @@ $( document ).ready(function() {
 
   if (!!$.cookie('pwd')) {
    // have cookie
-   $("#ApiContainer").html(`<h1>Create New Article</h1><input id="title">title</input><br><input id="category">category</input><br><input id="tags">tags</input><br><textarea id="text">text</textarea><br><button id="articlesend">SEND</button>`);
+   $("#ApiContainer").html(`<h1>Create New Item</h1>
+     <select id="Method">
+      <option value="article">article</option>
+      <option value="snippet">snippet</option>
+      <option value="link">Link</option>
+    </select><br>
+     <input id="title">title</input><br>
+     <input id="category">category</input><br>
+     <input id="tags">tags</input><br>
+     <textarea class="text" id="text">text</textarea><br>
+     <button id="articlesend">SEND</button>`);
   } else {
    // no cookie
    PwdInput();
@@ -38,8 +48,11 @@ function PWSave(){
 }
 
 function ArticleSend(){
+  var e = document.getElementById("Method");
+  var Method = e.options[e.selectedIndex].value;
   var data = {
     PWD:      $.cookie("pwd"),
+    Method:   Method,
     Title:    $('#title').val(),
     Category: $('#category').val(),
     Tags:     $('#tags').val(),

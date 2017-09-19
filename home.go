@@ -40,15 +40,33 @@ func MainCacheFunc(foo string) {
 	start := time.Now()
 	var MainCacheTMP template.HTML
 
-	ids, err := db.Query("SELECT title,tags,category,text FROM `article` ORDER by timecreate DESC LIMIT 10")
+	MainCacheTMP += "<div id='ArticleDIV'><div id='QualityArticle'>Quality Articles:</div>"
+
+	ids, err := db.Query("SELECT title,category FROM `item` WHERE method = 'article' ORDER by timecreate DESC LIMIT 15")
 	checkErr(err)
 
 	for ids.Next() {
 		var title string
+		var category string
+		_ = ids.Scan(&title, &category)
+		checkErr(err)
+
+		slug := category + "/" + title
+
+		MainCacheTMP += template.HTML("<div class='QualityArticleList' ><span>") + template.HTML(category) + template.HTML("</span>/") + template.HTML("<a href='/p/") + template.HTML(slug) + template.HTML("'>") + template.HTML(title) + template.HTML("</a></div>")
+	}
+
+	MainCacheTMP += "</div>"
+
+	ida, err := db.Query("SELECT title,tags,category,text FROM `item` ORDER by timecreate DESC LIMIT 10")
+	checkErr(err)
+
+	for ida.Next() {
+		var title string
 		var tags string
 		var category string
 		var text string
-		_ = ids.Scan(&title, &tags, &category, &text)
+		_ = ida.Scan(&title, &tags, &category, &text)
 		checkErr(err)
 
 		slug := category + "/" + title

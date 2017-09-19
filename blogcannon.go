@@ -88,7 +88,7 @@ func main() {
 	// sql.DB should be long lived "defer" closes it once this function ends
 	defer db.Close()
 
-	db.Exec("CREATE TABLE IF NOT EXISTS `article` ( `id` int(10) unsigned NOT NULL AUTO_INCREMENT, `title` varchar(100) NOT NULL DEFAULT 'NO TITLE', `tags` varchar(500) NOT NULL DEFAULT 'NO TAGS',`category` varchar(100) NOT NULL DEFAULT 'main', `timecreate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `text` longtext NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1")
+	db.Exec("CREATE TABLE `item` ( `id` int(10) unsigned NOT NULL AUTO_INCREMENT, `method` char(10) NOT NULL, `title` varchar(100) NOT NULL DEFAULT 'NO TITLE', `tags` varchar(500) NOT NULL DEFAULT 'NO TAGS', `category` varchar(100) NOT NULL DEFAULT 'main', `timecreate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `text` longtext NOT NULL, PRIMARY KEY (`id`), KEY `lists` (`method`,`timecreate`) USING BTREE, KEY `direct` (`title`,`category`) ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1")
 	gosocial.Init(db)
 
 	go func() {
