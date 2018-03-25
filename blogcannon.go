@@ -36,8 +36,6 @@ type Config struct {
 	Templatefolder           string
 	AdminHASH                string
 	BlogName                 string
-	CoinHiveToken            string
-	TrackTrackGo             string
 	JabberNotification       bool
 	JabberHost               string
 	JabberUser               string
