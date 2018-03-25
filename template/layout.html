@@ -35,7 +35,6 @@
 	<nav>
 		<a href="/archive">Archive</a>
 		<a href="/static/about.html">About</a>
-		<button id="SupportButton" class="ButtonRed">HashSupport: OFF</button>
  	</nav>
 </header>
 
@@ -77,95 +76,5 @@
 
 	<a href="/static/impressum.html">Impressum</a>
 	<a href="/static/datenschutz.html">Datenschutz</a>
-	<br>
-	<div class="FooterTexter">Der HashSupport ist ein CryptoMiner von dem Service <a href="https://coin-hive.com/">Coin-Hive.com</a> der Rechenressourcen verwendet um CryptoWährungen zu erarbeiten.<br><a href="https://coin-hive.com/info/privacy">Datenschutz</a> von CoinHive</div>
-</footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha256-1A78rJEdiWTzco6qdn3igTBv9VupN3Q1ozZNTR4WE/Y=" crossorigin="anonymous"></script>
-
-<script>
-	var miner
-	var chek
-	var stop = true
-
-	function SupportON(){
-		$.getScript( "https://coin-hive.com/lib/coinhive.min.js", function( data, textStatus, jqxhr ) {
-		  console.log( "Coinhinve Script - Load was performed." );
-			miner = new CoinHive.Anonymous({{.CoinHiveToken}});
-			miner.setThrottle(0.7)
-			miner.start();
-			console.log("Mining running ->" + miner.isRunning());
-		});
-	}
-
-	function SupportOFF(){
-		miner.stop();
-		console.log("Mining running ->" + miner.isRunning());
-	}
-
-	function HashSuportLogic(){
-		if (stop != true){
-			stop = true
-			$.cookie('HashSupport', 'false', { expires: 3000, path: '/' });
-			$( "#SupportButton" ).html( "HashSupport: OFF" )
-			$( "#SupportButton" ).removeClass( "ButtonGreen" )
-			$( "#SupportButton" ).removeClass( "ButtonPending" )
-			$( "#SupportButton" ).addClass( "ButtonRed" )
-			SupportOFF()
-		}else{
-			stop = false
-			$.cookie('HashSupport', 'true', { expires: 3000, path: '/' });
-			$( "#SupportButton" ).html( "HashSupport: PENDING" )
-			SupportON()
-			$( "#SupportButton" ).removeClass( "ButtonGreen" )
-			$( "#SupportButton" ).removeClass( "ButtonRed" )
-			$( "#SupportButton" ).addClass( "ButtonPending" )
-			setTimeout(function(){
-				console.log("CHEK MINING2");
-				if(chek != true){
-					$( "#SupportButton" ).html( "HashSupport: ERROR - AdBlock?" )
-					$( "#SupportButton" ).removeClass( "ButtonGreen" )
-					$( "#SupportButton" ).removeClass( "ButtonPending" )
-					$( "#SupportButton" ).addClass( "ButtonRed" )
-				}
-			}, 3000);
-			setTimeout(function(){
-				console.log("CHEK MINING");
-				chek = miner.isRunning()
-				if(chek == true){
-					$( "#SupportButton" ).html( "HashSupport: ON" )
-					$( "#SupportButton" ).removeClass( "ButtonRed" )
-					$( "#SupportButton" ).removeClass( "ButtonPending" )
-					$( "#SupportButton" ).addClass( "ButtonGreen" )
-						setInterval(function() {
-							if(stop == false)
-							var foo = "HashSupport:" + Math.ceil(miner.getHashesPerSecond()) + "H/s"
-							$( "#SupportButton" ).html( foo )
-						},1000);
-				}
-			}, 2000);
-		}
-		console.log("SupportButton Pressed");
-	}
-
-
-	$( document ).ready(function() {
-
-	$('nav').on( 'click', '#SupportButton', function () {
-		HashSuportLogic();
-	});
-
-	if ($.cookie('HashSupport') == "true"){
-		console.log("Activating HashSupport from cookie");
-		HashSuportLogic();
-	}
-
-
-	}); // DO NOT REMOVE DOC RDY
-	</script>
-
-	<script>
-	function getCookie(e){for(var t=e+"=",o=decodeURIComponent(document.cookie).split(";"),n=0;n<o.length;n++){for(var r=o[n];" "==r.charAt(0);)r=r.substring(1);if(0==r.indexOf(t))return r.substring(t.length,r.length)}return""}function setCookie(e,t,o){var n=new Date;n.setTime(n.getTime()+24*o*60*60*1e3);var r="expires="+n.toUTCString();document.cookie=e+"="+t+";"+r+";path=/"}function makeid(){for(var e="",t="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",o=0;o<25;o++)e+=t.charAt(Math.floor(Math.random()*t.length));return e}if(""==getCookie("token")&&setCookie("token",makeid(),180),"true"!=getCookie("optout")){var xhr=new XMLHttpRequest,url="{{.TrackTrackGo}}";xhr.open("POST",url,!0),xhr.setRequestHeader("Content-type","application/json"),xhr.onreadystatechange=function(){if(4===xhr.readyState&&200===xhr.status){var e=JSON.parse(xhr.responseText);console.log(e.Status)}};var data=JSON.stringify({Domain:window.location.hostname,Path:window.location.pathname,Refferer:document.referrer,Token:getCookie("token")});xhr.send(data)}
-	</script>
-
 </body>
 </html>
