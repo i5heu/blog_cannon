@@ -11,7 +11,6 @@ import (
 
 	"github.com/BurntSushi/toml"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/i5heu/gosocial"
 )
 
 var HtmlStructHeader string
@@ -87,7 +86,6 @@ func main() {
 	defer db.Close()
 
 	db.Exec("CREATE TABLE `item` ( `id` int(10) unsigned NOT NULL AUTO_INCREMENT, `method` char(10) NOT NULL, `title` varchar(100) NOT NULL DEFAULT 'NO TITLE', `tags` varchar(500) NOT NULL DEFAULT 'NO TAGS', `category` varchar(100) NOT NULL DEFAULT 'main', `timecreate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `text` longtext NOT NULL, PRIMARY KEY (`id`), KEY `lists` (`method`,`timecreate`) USING BTREE, KEY `direct` (`title`,`category`) ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1")
-	gosocial.Init(db)
 
 	go func() {
 		for {
@@ -116,19 +114,9 @@ func main() {
 	http.HandleFunc("/archive", ArchiveHandler)
 	http.HandleFunc("/api", ApiHandler)
 	http.HandleFunc("/favicon.ico", FaviconHandler)
-	http.HandleFunc("/gosocial", GoSocial)
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.HandleFunc("/", HomeHandler)
 	http.ListenAndServe(":8083", nil)
-}
-
-func GoSocial(w http.ResponseWriter, r *http.Request) {
-	foo, title, text := gosocial.ApiHandler(w, r, conf.AdminHASH)
-
-	if foo == "WriteComment" {
-		bar := "⚐ WriteComment \n###Title###-->\n" + title + "\n\n###Comment###-->\n" + text
-		sendXMPP(bar)
-	}
 }
 
 func FaviconHandler(w http.ResponseWriter, r *http.Request) {

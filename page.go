@@ -60,11 +60,11 @@ func PageHandler(w http.ResponseWriter, r *http.Request) {
 	list := lista{}
 
 	if TMPCACHEWRITE == false {
-		list = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHE[slug], true}
+		list = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHE[slug]}
 	} else if TMPCACHECACHEWRITE == false {
-		list = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHECACHE[slug], true}
+		list = lista{template.HTML(conf.BlogName), time.Since(start), TMPCACHECACHE[slug]}
 	} else {
-		list = lista{template.HTML(conf.BlogName), time.Since(start), template.HTML("<b> CACHE ERROR <br> Please reload this page</b>"), true}
+		list = lista{template.HTML(conf.BlogName), time.Since(start), template.HTML("<b> CACHE ERROR <br> Please reload this page</b>")}
 	}
 
 	templatesView.Execute(w, list)

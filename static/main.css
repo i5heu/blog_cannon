@@ -1,3 +1,18 @@
+/* share-tech-mono-regular - latin */
+@font-face {
+  font-family: 'Share Tech Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../static/fonts/share-tech-mono-v7-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Share Tech Mono'), local('ShareTechMono-Regular'),
+       url('../static/fonts/share-tech-mono-v7-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../static/fonts/share-tech-mono-v7-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../static/fonts/share-tech-mono-v7-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../static/fonts/share-tech-mono-v7-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../static/fonts/share-tech-mono-v7-latin-regular.svg#ShareTechMono') format('svg'); /* Legacy iOS */
+}
+
+
 html { background:#f1f1f1; }
 
 body{
